@@ -304,15 +304,16 @@ class IQ_Option:
     def __get_digital_open(self):
         # for digital options
         digital_data = self.get_digital_underlying_list_data()["underlying"]
-        for digital in digital_data:
-            name = digital["underlying"]
-            schedule = digital["schedule"]
-            self.OPEN_TIME["digital"][name]["open"] = False
-            for schedule_time in schedule:
-                start = schedule_time["open"]
-                end = schedule_time["close"]
-                if start < time.time() < end:
-                    self.OPEN_TIME["digital"][name]["open"] = True
+        if digital_data is not None and "underlying" in digital_data:
+            for digital in digital_data:
+                name = digital["underlying"]
+                schedule = digital["schedule"]
+                self.OPEN_TIME["digital"][name]["open"] = False
+                for schedule_time in schedule:
+                    start = schedule_time["open"]
+                    end = schedule_time["close"]
+                    if start < time.time() < end:
+                        self.OPEN_TIME["digital"][name]["open"] = True
 
     def __get_other_open(self):
         # Crypto and etc pairs
